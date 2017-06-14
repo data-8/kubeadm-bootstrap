@@ -1,0 +1,17 @@
+dependencies:
+- condition: ""
+  enabled: false
+  import-values: null
+  name: nginx-ingress
+  repository: https://kubernetes-charts.storage.googleapis.com
+  tags: null
+  version: 0.4.2
+- condition: ""
+  enabled: false
+  import-values: null
+  name: kube-lego
+  repository: https://kubernetes-charts.storage.googleapis.com
+  tags: null
+  version: 0.1.10
+digest: sha256:9602498625d995499e4042b0b16e061c9db21e1d9d7b8415c6e877a8422bb5d1
+generated: 2017-06-14T11:38:58.561082556-07:00
