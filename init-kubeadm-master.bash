@@ -20,3 +20,7 @@ kubectl apply -f kube-flannel.yaml
 # Make master node a running worker node too!
 # FIXME: Use taint tolerations instead in the future
 kubectl taint nodes --all node-role.kubernetes.io/master-
+
+# Mark the master as ingress node too!
+# FIXME: figure out what to do about this later?
+kubectl label $(kubectl get node -o name) node-role.kubernetes.io/ingress=""
