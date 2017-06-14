@@ -8,7 +8,7 @@ CMD=$(cat <<EOCMD
 cd /root;
 if [ ! -d /root/haas-infrastructure ]; then git clone https://github.com/data-8/haas-infrastructure.git; fi;
 cd haas-infrastructure
-git reset --hard && git pull origin master -q
+git fetch --quiet && git reset --hard --quiet origin/master
 ${2}
 EOCMD
    )
