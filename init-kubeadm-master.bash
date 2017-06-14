@@ -11,3 +11,12 @@ echo "Should be fixed by https://github.com/kubernetes/kubeadm/issues/305"
 
 kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="${KUBE_MASTER_IP}" --token="${KUBEADM_TOKEN}"
 
+# By now the master node should be ready!
+
+# Install flannel
+kubectl apply -f kube-flannel-rbac.yaml
+kubectl apply -f kube-flannel.yaml
+
+# Make master node a running worker node too!
+# FIXME: Use taint tolerations instead in the future
+kubectl taint nodes --all node-role.kubernetes.io/master-
