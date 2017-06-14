@@ -24,3 +24,24 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 # Mark the master as ingress node too!
 # FIXME: figure out what to do about this later?
 kubectl label $(kubectl get node -o name) node-role.kubernetes.io/ingress=""
+
+# For now, just set up permissive RBAC rules.
+# FIXME: Set up proper permissions instead!
+kubectl create clusterrolebinding permissive-binding \
+        --clusterrole=cluster-admin \
+        --user=admin \
+        --user=kubelet \
+        --group=system:serviceaccounts
+
+# Install helm
+curl https://storage.googleapis.com/kubernetes-helm/helm-v2.4.2-linux-amd64.tar.gz | tar xvz
+mv linux-amd64/helm /usr/local/bin
+rm -rf linux-amd64
+
+/usr/local/bin/helm init
+
+# Install nginx and other support stuff!
+helm install --name=support --namespace=support support/
+
+# Until https://github.com/kubernetes/charts/pull/1250 gets merged
+kubectl --namespace=support patch deployment support-nginx-ingress-controller -p '{"spec": {"template": { "spec": { "hostNetwork": true } } } }'
