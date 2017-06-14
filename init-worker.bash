@@ -1,7 +1,10 @@
 #!/bin/bash
 # This also expects the token and master IP to be passed in as env variables
 set -e
+
 NODES="${1}"
+
+[ -z "${NODES}" ] && echo "Specify node specification of workers to add" && exit 1
 
 CMD=$(cat <<EOCMD
 cd /root;
