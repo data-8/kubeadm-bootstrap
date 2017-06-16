@@ -41,6 +41,11 @@ rm -rf linux-amd64
 
 /usr/local/bin/helm init
 
+# Wait for tiller to be ready!
+# HACK: Do this better
+
+sleep 1m
+
 # Install nginx and other support stuff!
 helm install --name=support --namespace=support support/
 
