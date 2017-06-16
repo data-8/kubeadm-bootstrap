@@ -12,7 +12,7 @@ echo "Should be fixed by https://github.com/kubernetes/kubeadm/issues/305"
 kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="${KUBE_MASTER_IP}" --token="${KUBEADM_TOKEN}"
 
 # By now the master node should be ready!
-KUBECONFIG=/etc/kubernetes/admin.conf
+export KUBECONFIG=/etc/kubernetes/admin.conf
 
 # Install flannel
 kubectl apply -f kube-flannel-rbac.yaml
