@@ -17,6 +17,7 @@ apt-get install -y docker-engine
 systemctl stop docker
 modprobe overlay
 echo '{"storage-driver": "overlay"}' > /etc/docker/daemon.json
+rm -rf /var/lib/docker
 systemctl start docker
 
 # Install kubernetes components!
