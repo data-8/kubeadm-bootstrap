@@ -10,4 +10,14 @@ apt-get update
 # Install docker if you don't have it already.
 
 apt-get install -y docker-engine
+
+# Make sure you're using the overlay driver!
+# Note that this gives us docker 1.11, which does *not* support overlay2
+
+systemctl stop docker
+modprobe overlay
+echo '{"storage-driver": "overlay"}' > /etc/docker/daemon.json
+systemctl start docker
+
+# Install kubernetes components!
 apt-get install -y kubelet kubeadm kubernetes-cni
