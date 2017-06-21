@@ -17,10 +17,6 @@ kubectl apply -f kube-flannel.yaml
 # FIXME: Use taint tolerations instead in the future
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
-# Mark the master as ingress node too!
-# FIXME: figure out what to do about this later?
-kubectl label $(kubectl get node -o name) node-role.kubernetes.io/ingress=""
-
 # For now, just set up permissive RBAC rules.
 # FIXME: Set up proper permissions instead!
 kubectl create clusterrolebinding permissive-binding \

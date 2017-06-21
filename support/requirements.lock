@@ -5,7 +5,7 @@ dependencies:
   name: nginx-ingress
   repository: https://kubernetes-charts.storage.googleapis.com
   tags: null
-  version: 0.4.2
+  version: 0.6.0
 - condition: ""
   enabled: false
   import-values: null
@@ -13,5 +13,5 @@ dependencies:
   repository: https://kubernetes-charts.storage.googleapis.com
   tags: null
   version: 0.1.10
-digest: sha256:9602498625d995499e4042b0b16e061c9db21e1d9d7b8415c6e877a8422bb5d1
-generated: 2017-06-14T11:38:58.561082556-07:00
+digest: sha256:5e7625c2e7462e66f39913007a6290d5b37831828d1ab8a140e0c5539e2047ce
+generated: 2017-06-21T16:21:41.184856526-07:00
