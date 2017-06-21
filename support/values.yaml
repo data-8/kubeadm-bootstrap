@@ -1,11 +1,9 @@
 nginx-ingress:
   controller:
-    image:
-      tag: 0.9.0-beta.7
     service:
       type: ClusterIP
-    nodeSelector:
-      node-role.kubernetes.io/ingress: ""
+    kind: DaemonSet
+    hostNetwork: true
 
 kube-lego:
   config:
