@@ -49,6 +49,7 @@ You must have ssh access to all the nodes. You also need root :)
    
    a. `KUBE_MASTER` - the IP of the kubernetes master node that the worker nodes
        can reach it at. 
+
    b. `KUBEADM_TOKEN` - the token used by worker nodes to join the kubernetes
        cluster. You can generate this by running `kubeadm token generate` and
        noting down that value.
@@ -64,13 +65,18 @@ You must have ssh access to all the nodes. You also need root :)
    
    a. A Kubernetes Master with all the required components (etcd, apiserver,
       scheduler and controller-manager)
+
    b. Flannel with VXLAN backend for the Pod Network
+
    c. A very permissive cluster binding - mimics the way permissions worked up
       to Kubernetes 1.5. This will probably go away once more tools get proper
       RBAC support.
+
    d. Helm for installing software on to the cluster.
+
    e. An nginx ingress that is installed on all nodes - this is used to get
       network traffic into the cluster. This is installed via helm.
+
    d. kube-lego for automated Let's Encrypt certificates. This is also installed
       via helm.
    
@@ -80,11 +86,14 @@ You must have ssh access to all the nodes. You also need root :)
    done!
    
 5. Test that everything is up!
+
    a. Run `kubectl get node` - you should see one node (your master node) marked
       as `Ready`.
+
    b. Run `kubectl --namespace=kube-system get pod`. Everything should be in
       `Running` state. If it's still `Pending`, give it a couple minutes. If
        they are in `Error` or `CrashLoopBackoff` state, something is wrong.
+
    c. Do 'curl localhost' - it should output `404 Not Found`. This means network
       traffic into the cluster is working. If your master node also has an external
       IP that is accessible from the internet, try hitting that too - it should
@@ -121,13 +130,16 @@ as a Kubernetes master for other nodes!
    bootstrap itself. When this completes successfully, it means your node is up!
    
 5. Test that everything is up!
+
    a. On the master, run `kubectl get node` - it should list your new node in
       `Ready` state.
+
    b. Run `kubectl --namespace=kube-system get pod -o wide`. This should show
       you a `kube-proxy`, a `flannel` and `nginx-controller` pod running on your
       new node in `Ready` state. If it is in `Pending` state, give it a few minutes
       to get to `Ready`. If it's in `Error` or `CrashLoopBackoff` you have a
       problem.
+
    c. Do `curl localhost` - it should output `404 Not Found`. This means network
       traffic into your cluster is working. If this worker node also has a public
       IP that is accessible from the internet, hit that too - you should get the
