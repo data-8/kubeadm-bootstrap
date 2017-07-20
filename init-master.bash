@@ -6,7 +6,8 @@ source data/config.bash
 kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="${KUBE_MASTER_IP}" --token="${KUBEADM_TOKEN}"
 
 # By now the master node should be ready!
-export KUBECONFIG=/etc/kubernetes/admin.conf
+mkdir -p ~/.kube
+ln -s /etc/kubernetes/admin.conf ~/.kube/config
 
 # Install flannel
 kubectl apply -f kube-flannel-rbac.yaml

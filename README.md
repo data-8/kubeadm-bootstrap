@@ -37,8 +37,10 @@ You must have ssh access to all the nodes. You also need root :)
 1. Clone this git repository on to your master node
    `git clone https://github.com/data-8/kubeadm-bootstrap``
    
-2. Install the pre-requisites for starting the master.
-   `sudo ./install-kubeadm.bash`
+2. Install the pre-requisites for starting the master. Run this as root!
+   ```bash
+   # ./install-kubeadm.bash`
+   ```
    
    This installs kubeadm, a supported version of docker and sets up the
    appropriate storage driver options for docker.
@@ -58,8 +60,10 @@ You must have ssh access to all the nodes. You also need root :)
        this can get root on your cluster easily. Treat it the same as you would
        a root ssh key or password!
    
-4. Setup the master!
-   `sudo ./init-master.bash`
+4. Setup the master - run this as root too!
+   ``` bash
+   ./init-master.bash
+   ```
    
    This will take a minute or two, but should set up and install the following:
    
@@ -80,6 +84,11 @@ You must have ssh access to all the nodes. You also need root :)
    d. kube-lego for automated Let's Encrypt certificates. This is also installed
       via helm.
    
+   e. Symlinks `/etc/kubernetes/admin.conf` to `~/.kube/config` - this contains
+      credentials and connection info for connecting to the master. If you want
+      to allow other users to connect to the k8s master, give them access to
+      this file too.
+
    The master node is also marked as schedulable - this might not be ideal if
    you are running a large cluster, but is useful otherwise. This also means
    that if you only wanted a single node Kubernetes cluster, you are already
@@ -110,8 +119,10 @@ as a Kubernetes master for other nodes!
    `git clone https://github.com/data-8/kubeadm-bootstrap``
    
 2. Install the pre-requisites for setting up a node. This is the same script
-   used for setting up the master too.
-   `sudo ./install-kubeadm.bash`
+   used for setting up the master too. Again, run this as root.
+   ```bash
+   # ./install-kubeadm.bash
+   ```
    
    This installs kubeadm, a supported version of docker and sets up the
    appropriate storage driver options for docker.
@@ -121,8 +132,10 @@ as a Kubernetes master for other nodes!
    the important `KUBEADM_TOKEN` that provides root-equivalent access to the
    kubernetes cluster.
    
-4. Setup the node!
-   `sudo ./init-worker.bash`
+4. Setup the node! Run this as root too.
+   ```bash
+   ./init-worker.bash
+   ```
    
    This will take a few minutes too. It sets up the current node to be a
    Kubernetes worker node, and automatically tries to connect to the master (via
