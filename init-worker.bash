@@ -3,6 +3,5 @@
 set -e
 
 source data/config.bash
-source data/secrets.bash
 
 kubeadm join --token "${KUBEADM_TOKEN}"  "${KUBE_MASTER_IP}":6443
