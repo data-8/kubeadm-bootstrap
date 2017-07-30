@@ -1,7 +1,0 @@
-sudo: required
-
-install:
-  - sudo ./install-singlenode.bash
-
-script:
-  - kubectl version
