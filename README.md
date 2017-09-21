@@ -35,11 +35,11 @@ You must have ssh access to all the nodes. You also need root :)
 ### Setting up a Master Node
 
 1. Clone this git repository on to your master node
-   `git clone https://github.com/data-8/kubeadm-bootstrap``
+   `git clone https://github.com/data-8/kubeadm-bootstrap`
    
 2. Install the pre-requisites for starting the master. Run this as root!
    ```bash
-   # ./install-kubeadm.bash`
+   ./install-kubeadm.bash
    ```
    
    This installs kubeadm, a supported version of docker and sets up the
@@ -115,13 +115,13 @@ as a Kubernetes master for other nodes!
 
 ### Setting up a worker node
 
-1. Clone this git repository on to your master node
-   `git clone https://github.com/data-8/kubeadm-bootstrap``
+1. Clone this git repository on to your worker node
+   `git clone https://github.com/data-8/kubeadm-bootstrap`
    
 2. Install the pre-requisites for setting up a node. This is the same script
    used for setting up the master too. Again, run this as root.
    ```bash
-   # ./install-kubeadm.bash
+   ./install-kubeadm.bash
    ```
    
    This installs kubeadm, a supported version of docker and sets up the
