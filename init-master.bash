@@ -17,25 +17,19 @@ kubectl apply -f kube-flannel.yaml
 # FIXME: Use taint tolerations instead in the future
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
-# For now, just set up permissive RBAC rules.
-# FIXME: Set up proper permissions instead!
-kubectl create clusterrolebinding permissive-binding \
-        --clusterrole=cluster-admin \
-        --user=admin \
-        --user=kubelet \
-        --group=system:serviceaccounts
 
 # Install helm
-curl https://storage.googleapis.com/kubernetes-helm/helm-v2.4.2-linux-amd64.tar.gz | tar xvz
+curl https://storage.googleapis.com/kubernetes-helm/helm-v2.8.0-linux-amd64.tar.gz | tar xvz
 mv linux-amd64/helm /usr/local/bin
 rm -rf linux-amd64
 
-/usr/local/bin/helm init
+kubectl --namespace kube-system create sa tiller
+kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+helm init --service-account tiller
+kubectl --namespace=kube-system patch deployment tiller-deploy --type=json --patch='[{"op": "add", "path": "/spec/template/spec/containers/0/command", "value": ["/tiller", "--listen=localhost:44134"]}]'
 
 # Wait for tiller to be ready!
-# HACK: Do this better
-
-sleep 1m
+kubectl rollout status --namespace=kube-system deployment/tiller-deploy --watch
 
 # Install nginx and other support stuff!
 helm install --name=support --namespace=support support/
