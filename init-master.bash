@@ -10,8 +10,7 @@ mkdir -p ~/.kube
 ln -s /etc/kubernetes/admin.conf ~/.kube/config
 
 # Install flannel
-kubectl apply -f kube-flannel-rbac.yaml
-kubectl apply -f kube-flannel.yaml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
 
 # Make master node a running worker node too!
 # FIXME: Use taint tolerations instead in the future
