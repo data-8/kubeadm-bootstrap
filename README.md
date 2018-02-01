@@ -45,22 +45,8 @@ You must have ssh access to all the nodes. You also need root :)
    This installs kubeadm, a supported version of docker and sets up the
    appropriate storage driver options for docker.
    
-3. Prepare your config files! There's a sample one in `data/config.bash.sample` that
-   shows you how to make one. You should copy it to `data/config.bash` and fill
-   in the values. The primary values we care about are:
    
-   a. `KUBE_MASTER` - the IP of the kubernetes master node that the worker nodes
-       can reach it at. 
-
-   b. `KUBEADM_TOKEN` - the token used by worker nodes to join the kubernetes
-       cluster. You can generate this by running `kubeadm token generate` and
-       noting down that value.
-       
-       **WARNING**: Keep the `KUBEADM_TOKEN` very private - users with access to
-       this can get root on your cluster easily. Treat it the same as you would
-       a root ssh key or password!
-   
-4. Setup the master - run this as root too!
+3. Setup the master - run this as root too!
    ``` bash
    ./init-master.bash
    ```
@@ -72,22 +58,10 @@ You must have ssh access to all the nodes. You also need root :)
 
    b. Flannel with VXLAN backend for the Pod Network
 
-   c. A very permissive cluster binding - mimics the way permissions worked up
-      to Kubernetes 1.5. This will probably go away once more tools get proper
-      RBAC support.
+   c. Helm for installing software on to the cluster.
 
-   d. Helm for installing software on to the cluster.
-
-   e. An nginx ingress that is installed on all nodes - this is used to get
+   d. An nginx ingress that is installed on all nodes - this is used to get
       network traffic into the cluster. This is installed via helm.
-
-   d. kube-lego for automated Let's Encrypt certificates. This is also installed
-      via helm.
-   
-   e. Symlinks `/etc/kubernetes/admin.conf` to `~/.kube/config` - this contains
-      credentials and connection info for connecting to the master. If you want
-      to allow other users to connect to the k8s master, give them access to
-      this file too.
 
    The master node is also marked as schedulable - this might not be ideal if
    you are running a large cluster, but is useful otherwise. This also means
@@ -115,32 +89,34 @@ as a Kubernetes master for other nodes!
 
 ### Setting up a worker node
 
-1. Clone this git repository on to your master node
-   `git clone https://github.com/data-8/kubeadm-bootstrap``
-   
-2. Install the pre-requisites for setting up a node. This is the same script
-   used for setting up the master too. Again, run this as root.
+1. In your master node, run:
    ```bash
-   # ./install-kubeadm.bash
+   sudo kubeadm token create --print-join-command
+   ```
+   
+   This will print a command that like:
+
+   ```
+   kubeadm join --token <some-secret> <master-ip>:6443 --discovery-token-ca-cert-hash sha256:<another-secret>
+   ```
+   
+   This creates a `token` that can be used by another node to join the
+   cluster. This `token` is valid for 24h by default. Treat it very
+   securely, since leaking it can compromise your cluster.
+
+2. On the worker node you want to join to the cluster, install the
+   pre-requisites. This is the same script
+   used for setting up the master too.
+   ```bash
+   $ sudo ./install-kubeadm.bash
    ```
    
    This installs kubeadm, a supported version of docker and sets up the
    appropriate storage driver options for docker.
 
-3. Copy `data/config.bash` file you prepared for the master onto this checkout
-   of the repository. Remember to not commit this file onto git - it contains
-   the important `KUBEADM_TOKEN` that provides root-equivalent access to the
-   kubernetes cluster.
-   
-4. Setup the node! Run this as root too.
-   ```bash
-   ./init-worker.bash
-   ```
-   
-   This will take a few minutes too. It sets up the current node to be a
-   Kubernetes worker node, and automatically tries to connect to the master (via
-   the `KUBE_MASTER_IP` & `KUBEADM_TOKEN` variables from `data/config.bash`) and
-   bootstrap itself. When this completes successfully, it means your node is up!
+4. Setup the node! Copy the `kubeadm join` command you got as output
+   of step (1) from the maser, and run it in the node. You might have to
+   prefix it with `sudo`. This should take a few minutes.
    
 5. Test that everything is up!
 
@@ -153,11 +129,13 @@ as a Kubernetes master for other nodes!
       to get to `Ready`. If it's in `Error` or `CrashLoopBackoff` you have a
       problem.
 
-   c. Do `curl localhost` - it should output `404 Not Found`. This means network
-      traffic into your cluster is working. If this worker node also has a public
-      IP that is accessible from the internet, hit that too - you should get the
-      same output. If not, you might be having firewall issues - check to make sure
-      traffic can reach this worker node from outside!
+   c. On the new worker node, do `curl localhost` - it should output
+      `404 Not Found`. This means network traffic into your cluster
+      is working. If this worker node also has a public
+      IP that is accessible from the internet, hit that too - you
+      should get the same output. If not, you might be having firewall
+      issues - check to make sure traffic can reach this worker node
+      from outside!
       
 Congratulations, you have a working multi-node Kubernetes cluster! You can
 repeat these steps to add as many new nodes as you want :)

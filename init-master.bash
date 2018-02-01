@@ -1,9 +1,7 @@
 #!/bin/bash
 set -e
 
-source data/config.bash
-
-kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="${KUBE_MASTER_IP}" --token="${KUBEADM_TOKEN}"
+kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # By now the master node should be ready!
 mkdir -p ~/.kube
@@ -15,7 +13,6 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documen
 # Make master node a running worker node too!
 # FIXME: Use taint tolerations instead in the future
 kubectl taint nodes --all node-role.kubernetes.io/master-
-
 
 # Install helm
 curl https://storage.googleapis.com/kubernetes-helm/helm-v2.8.0-linux-amd64.tar.gz | tar xvz

@@ -4,9 +4,3 @@ nginx-ingress:
       type: ClusterIP
     kind: DaemonSet
     hostNetwork: true
-
-kube-lego:
-  config:
-    LEGO_EMAIL: ds-instr@berkeley.edu
-    LEGO_URL: https://acme-v01.api.letsencrypt.org/directory
-  
