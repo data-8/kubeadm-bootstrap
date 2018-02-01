@@ -8,6 +8,16 @@ This is just a wrapper around `kubeadm` to provide sane defaults.
 
 ## Pre-requisites
 
+### Empty nodes
+
+Kubernetes takes full control of all the nodes it runs on, so do not do this
+on nodes that are also being used for other things.
+
+### Swap turned off
+
+Kubernetes does not support running on Nodes with Swap turned on. Make sure
+that swap is turned off on the nodes you are planning on using this on.
+
 ### Operating System
 
 This has been tested on Ubuntu 16.04 only. We would welcome patches to support
