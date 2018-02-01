@@ -4,8 +4,9 @@ set -e
 kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # By now the master node should be ready!
-mkdir -p ~/.kube
-ln -s /etc/kubernetes/admin.conf ~/.kube/config
+mkdir -p $HOME/.kube
+cp --remove-destination /etc/kubernetes/admin.conf $HOME/.kube/config
+chown ${SUDO_UID} $HOME/.kube/config
 
 # Install flannel
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml

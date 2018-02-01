@@ -47,20 +47,22 @@ You must have ssh access to all the nodes. You also need root :)
 1. Clone this git repository on to your master node
    `git clone https://github.com/data-8/kubeadm-bootstrap``
    
-2. Install the pre-requisites for starting the master. Run this as root!
+2. Install the pre-requisites for starting the master.
    ```bash
-   # ./install-kubeadm.bash`
+   sudo ./install-kubeadm.bash`
    ```
    
    This installs kubeadm, a supported version of docker and sets up the
    appropriate storage driver options for docker.
    
    
-3. Setup the master - run this as root too!
+3. Setup the master.
    ``` bash
-   ./init-master.bash
+   sudo -E ./init-master.bash
    ```
    
+   The `-E` after `sudo` is important.
+
    This will take a minute or two, but should set up and install the following:
    
    a. A Kubernetes Master with all the required components (etcd, apiserver,
@@ -72,6 +74,9 @@ You must have ssh access to all the nodes. You also need root :)
 
    d. An nginx ingress that is installed on all nodes - this is used to get
       network traffic into the cluster. This is installed via helm.
+
+   e. Credentials to access the kubernetes cluster in the currently running user's
+      `~/.kube/config` directory.
 
    The master node is also marked as schedulable - this might not be ideal if
    you are running a large cluster, but is useful otherwise. This also means
@@ -118,7 +123,7 @@ as a Kubernetes master for other nodes!
    pre-requisites. This is the same script
    used for setting up the master too.
    ```bash
-   $ sudo ./install-kubeadm.bash
+   sudo ./install-kubeadm.bash
    ```
    
    This installs kubeadm, a supported version of docker and sets up the
