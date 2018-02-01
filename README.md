@@ -44,10 +44,12 @@ You must have ssh access to all the nodes. You also need root :)
 
 ### Setting up a Master Node
 
-1. Clone this git repository on to your master node
-   `git clone https://github.com/data-8/kubeadm-bootstrap``
+1. Clone this git repository on to your master node:
+   ```bash
+   git clone https://github.com/data-8/kubeadm-bootstrap
+   ```
    
-2. Install the pre-requisites for starting the master.
+2. Install the pre-requisites for starting the master:
    ```bash
    sudo ./install-kubeadm.bash`
    ```
@@ -57,7 +59,7 @@ You must have ssh access to all the nodes. You also need root :)
    
    
 3. Setup the master.
-   ``` bash
+   ```bash
    sudo -E ./init-master.bash
    ```
    
@@ -89,10 +91,11 @@ You must have ssh access to all the nodes. You also need root :)
       as `Ready`.
 
    b. Run `kubectl --namespace=kube-system get pod`. Everything should be in
-      `Running` state. If it's still `Pending`, give it a couple minutes. If
-       they are in `Error` or `CrashLoopBackoff` state, something is wrong.
+      `Running` state.  If it's still `Pending`, give it a couple minutes. If
+       they are in `Error` or `CrashLoopBackoff` state, something is wrong. Here's an example of what it might look like:
 
-   c. Do 'curl localhost' - it should output `404 Not Found`. This means network
+
+   c. Do `curl localhost`.  It should output `404 Not Found`. This means network
       traffic into the cluster is working. If your master node also has an external
       IP that is accessible from the internet, try hitting that too - it should
       also return the same thing. If not, you might be having firewall issues -
@@ -135,7 +138,7 @@ as a Kubernetes master for other nodes!
    
 5. Test that everything is up!
 
-   a. On the master, run `kubectl get node` - it should list your new node in
+   a. On the master, run `kubectl get node`.  It should list your new node in
       `Ready` state.
 
    b. Run `kubectl --namespace=kube-system get pod -o wide`. This should show
@@ -144,7 +147,7 @@ as a Kubernetes master for other nodes!
       to get to `Ready`. If it's in `Error` or `CrashLoopBackoff` you have a
       problem.
 
-   c. On the new worker node, do `curl localhost` - it should output
+   c. On the new worker node, do `curl localhost`. It should output
       `404 Not Found`. This means network traffic into your cluster
       is working. If this worker node also has a public
       IP that is accessible from the internet, hit that too - you
