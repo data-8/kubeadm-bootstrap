@@ -1,7 +1,7 @@
 ## Kubeadm Bootstrapper
 
 This repository contains a bunch of helper scripts to set up Kubernetes clusters
-using kubeadm. It is meant for use on bare-metal clusters, as well as VMs
+using `kubeadm`. It is meant for use on bare-metal clusters, as well as VMs
 that are being treated like bare-metal clusters for various reasons. 
 
 This is just a wrapper around `kubeadm` to provide sane defaults.
@@ -27,7 +27,7 @@ by default, so if you didn't fiddle with it you are good!
 ### Networking
 
 All nodes in the cluster must have unrestricted outbound internet access. This
-is for pulling in docker images & debian packages.
+is for pulling in Docker images & Debian packages.
 
 At least one node in the cluster must have a public IP if you want to expose
 network services to the world (via Ingress).
@@ -54,8 +54,8 @@ You must have ssh access to all the nodes. You also need root :)
    sudo ./install-kubeadm.bash`
    ```
    
-   This installs kubeadm, a supported version of docker and sets up the
-   appropriate storage driver options for docker.
+   This installs `kubeadm`, a supported version of Docker and sets up the
+   appropriate storage driver options for Docker.
    
    
 3. Setup the master.
@@ -74,10 +74,10 @@ You must have ssh access to all the nodes. You also need root :)
 
    c. Helm for installing software on to the cluster.
 
-   d. An nginx ingress that is installed on all nodes - this is used to get
-      network traffic into the cluster. This is installed via helm.
+   d. An Nginx ingress that is installed on all nodes - this is used to get
+      network traffic into the cluster. This is installed via Helm.
 
-   e. Credentials to access the kubernetes cluster in the currently running user's
+   e. Credentials to access the Kubernetes cluster in the currently running user's
       `~/.kube/config` directory.
 
    The master node is also marked as schedulable - this might not be ideal if
@@ -102,7 +102,7 @@ You must have ssh access to all the nodes. You also need root :)
       check to make sure traffic can reach the master node from outside!
    
 
-Congratulations, now you have a single node kubernetes cluster that can also act
+Congratulations, now you have a single node Kubernetes cluster that can also act
 as a Kubernetes master for other nodes!
 
 ### Setting up a worker node
@@ -129,7 +129,7 @@ as a Kubernetes master for other nodes!
    sudo ./install-kubeadm.bash
    ```
    
-   This installs kubeadm, a supported version of docker and sets up the
+   This installs `kubeadm`, a supported version of docker and sets up the
    appropriate storage driver options for docker.
 
 4. Setup the node! Copy the `kubeadm join` command you got as output
