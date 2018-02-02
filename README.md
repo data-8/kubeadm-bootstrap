@@ -44,13 +44,11 @@ You must have ssh access to all the nodes. You also need root :)
 
 ### Setting up a Master Node
 
-1. Clone this git repository on to your master node:
+  
+1. Install the pre-requisites for starting the master:
    ```bash
    git clone https://github.com/data-8/kubeadm-bootstrap
-   ```
-   
-2. Install the pre-requisites for starting the master:
-   ```bash
+   cd kubeadm-bootstrap
    sudo ./install-kubeadm.bash
    ```
    
@@ -58,7 +56,7 @@ You must have ssh access to all the nodes. You also need root :)
    appropriate storage driver options for Docker.
    
    
-3. Setup the master.
+2. Setup the master.
    ```bash
    sudo -E ./init-master.bash
    ```
@@ -85,7 +83,7 @@ You must have ssh access to all the nodes. You also need root :)
    that if you only wanted a single node Kubernetes cluster, you are already
    done!
    
-5. Test that everything is up!
+3. Test that everything is up!
 
    a. Run `kubectl get node` - you should see one node (your master node) marked
       as `Ready`.
@@ -123,8 +121,7 @@ as a Kubernetes master for other nodes!
    securely, since leaking it can compromise your cluster.
 
 2. On the worker node you want to join to the cluster, install the
-   pre-requisites. This is the same script
-   used for setting up the master too.
+   pre-requisites:
    ```bash
    git clone https://github.com/data-8/kubeadm-bootstrap
    cd kubeadm-bookstrap
@@ -134,11 +131,11 @@ as a Kubernetes master for other nodes!
    This installs `kubeadm`, a supported version of docker and sets up the
    appropriate storage driver options for docker.
 
-4. Setup the node! Copy the `kubeadm join` command you got as output
+3. Setup the node! Copy the `kubeadm join` command you got as output
    of step (1) from the maser, and run it in the node. You might have to
    prefix it with `sudo`. This should take a few minutes.
    
-5. Test that everything is up!
+4. Test that everything is up!
 
    a. On the master, run `kubectl get node`.  It should list your new node in
       `Ready` state.
