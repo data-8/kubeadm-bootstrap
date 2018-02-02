@@ -90,8 +90,7 @@ You must have ssh access to all the nodes. You also need root :)
 
    b. Run `kubectl --namespace=kube-system get pod`. Everything should be in
       `Running` state.  If it's still `Pending`, give it a couple minutes. If
-       they are in `Error` or `CrashLoopBackoff` state, something is wrong. Here's an example of what it might look like:
-
+       they are in `Error` or `CrashLoopBackoff` state, something is wrong. 
 
    c. Do `curl localhost`.  It should output `404 Not Found`. This means network
       traffic into the cluster is working. If your master node also has an external
