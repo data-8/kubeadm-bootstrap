@@ -131,17 +131,17 @@ as a Kubernetes master for other nodes!
    This installs `kubeadm`, a supported version of docker and sets up the
    appropriate storage driver options for docker.
 
-3. Setup the node! Copy the `kubeadm join` command you got as output
-   of step (1) from the maser, and run it in the node. You might have to
-   prefix it with `sudo`. This should take a few minutes.
+3. Copy the `kubeadm join` command you got as output
+   of step (1) from the master, prefix with `sudo` and run it. 
+   This should take a few minutes.
    
 4. Test that everything is up!
 
    a. On the master, run `kubectl get node`.  It should list your new node in
       `Ready` state.
 
-   b. Run `kubectl --namespace=kube-system get pod -o wide`. This should show
-      you a `kube-proxy`, a `flannel` and `nginx-controller` pod running on your
+   b. On the master, run `sudo kubectl --namespace=kube-system get pod -o wide`. This should show
+      you a `kube-proxy`, a `kube-flannel` and `kube-controller` pod running on your
       new node in `Ready` state. If it is in `Pending` state, give it a few minutes
       to get to `Ready`. If it's in `Error` or `CrashLoopBackoff` you have a
       problem.
