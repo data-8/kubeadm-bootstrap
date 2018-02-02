@@ -124,7 +124,7 @@ as a Kubernetes master for other nodes!
    pre-requisites:
    ```bash
    git clone https://github.com/data-8/kubeadm-bootstrap
-   cd kubeadm-bookstrap
+   cd kubeadm-bootstrap
    sudo ./install-kubeadm.bash
    ```
    
