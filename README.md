@@ -126,6 +126,8 @@ as a Kubernetes master for other nodes!
    pre-requisites. This is the same script
    used for setting up the master too.
    ```bash
+   git clone https://github.com/data-8/kubeadm-bootstrap
+   cd kubeadm-bookstrap
    sudo ./install-kubeadm.bash
    ```
    
