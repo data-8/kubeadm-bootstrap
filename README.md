@@ -45,21 +45,20 @@ You must have ssh access to all the nodes. You also need root :)
 ### Setting up a Master Node
 
 1. Clone this git repository on to your master node
-   `git clone https://github.com/data-8/kubeadm-bootstrap``
+
+        git clone https://github.com/data-8/kubeadm-bootstrap
    
 2. Install the pre-requisites for starting the master.
-   ```bash
-   sudo ./install-kubeadm.bash`
-   ```
+
+        sudo ./install-kubeadm.bash
    
    This installs kubeadm, a supported version of docker and sets up the
    appropriate storage driver options for docker.
    
    
 3. Setup the master.
-   ``` bash
-   sudo -E ./init-master.bash
-   ```
+
+        sudo -E ./init-master.bash
    
    The `-E` after `sudo` is important.
 
@@ -92,7 +91,7 @@ You must have ssh access to all the nodes. You also need root :)
       `Running` state. If it's still `Pending`, give it a couple minutes. If
        they are in `Error` or `CrashLoopBackoff` state, something is wrong.
 
-   c. Do 'curl localhost' - it should output `404 Not Found`. This means network
+   c. Do `curl localhost` - it should output `404 Not Found`. This means network
       traffic into the cluster is working. If your master node also has an external
       IP that is accessible from the internet, try hitting that too - it should
       also return the same thing. If not, you might be having firewall issues -
@@ -105,15 +104,12 @@ as a Kubernetes master for other nodes!
 ### Setting up a worker node
 
 1. In your master node, run:
-   ```bash
-   sudo kubeadm token create --print-join-command
-   ```
+
+       sudo kubeadm token create --print-join-command
    
    This will print a command that like:
 
-   ```
-   kubeadm join --token <some-secret> <master-ip>:6443 --discovery-token-ca-cert-hash sha256:<another-secret>
-   ```
+       kubeadm join --token <some-secret> <master-ip>:6443 --discovery-token-ca-cert-hash sha256:<another-secret>
    
    This creates a `token` that can be used by another node to join the
    cluster. This `token` is valid for 24h by default. Treat it very
@@ -122,9 +118,8 @@ as a Kubernetes master for other nodes!
 2. On the worker node you want to join to the cluster, install the
    pre-requisites. This is the same script
    used for setting up the master too.
-   ```bash
-   sudo ./install-kubeadm.bash
-   ```
+
+       sudo ./install-kubeadm.bash
    
    This installs kubeadm, a supported version of docker and sets up the
    appropriate storage driver options for docker.
