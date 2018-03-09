@@ -1,7 +1,7 @@
 ## Kubeadm Bootstrapper
 
 This repository contains a bunch of helper scripts to set up Kubernetes clusters
-using kubeadm. It is meant for use on bare-metal clusters, as well as VMs
+using `kubeadm`. It is meant for use on bare-metal clusters, as well as VMs
 that are being treated like bare-metal clusters for various reasons. 
 
 This is just a wrapper around `kubeadm` to provide sane defaults.
@@ -27,7 +27,7 @@ by default, so if you didn't fiddle with it you are good!
 ### Networking
 
 All nodes in the cluster must have unrestricted outbound internet access. This
-is for pulling in docker images & debian packages.
+is for pulling in Docker images & Debian packages.
 
 At least one node in the cluster must have a public IP if you want to expose
 network services to the world (via Ingress).
@@ -43,22 +43,24 @@ You must have ssh access to all the nodes. You also need root :)
 ## Setting up a cluster
 
 ### Setting up a Master Node
+  
+1. Install the pre-requisites for starting the master:
 
-1. Clone this git repository on to your master node
+   ```bash
+   git clone https://github.com/data-8/kubeadm-bootstrap
+   cd kubeadm-bootstrap
+   sudo ./install-kubeadm.bash
+   ```
+   
+   This installs `kubeadm`, a supported version of Docker and sets up the
+   appropriate storage driver options for Docker.
+   
+   
+2. Setup the master.
 
-        git clone https://github.com/data-8/kubeadm-bootstrap
-   
-2. Install the pre-requisites for starting the master.
-
-        sudo ./install-kubeadm.bash
-   
-   This installs kubeadm, a supported version of docker and sets up the
-   appropriate storage driver options for docker.
-   
-   
-3. Setup the master.
-
-        sudo -E ./init-master.bash
+   ```bash
+   sudo -E ./init-master.bash
+   ```
    
    The `-E` after `sudo` is important.
 
@@ -71,10 +73,10 @@ You must have ssh access to all the nodes. You also need root :)
 
    c. Helm for installing software on to the cluster.
 
-   d. An nginx ingress that is installed on all nodes - this is used to get
-      network traffic into the cluster. This is installed via helm.
+   d. An Nginx ingress that is installed on all nodes - this is used to get
+      network traffic into the cluster. This is installed via Helm.
 
-   e. Credentials to access the kubernetes cluster in the currently running user's
+   e. Credentials to access the Kubernetes cluster in the currently running user's
       `~/.kube/config` directory.
 
    The master node is also marked as schedulable - this might not be ideal if
@@ -82,23 +84,24 @@ You must have ssh access to all the nodes. You also need root :)
    that if you only wanted a single node Kubernetes cluster, you are already
    done!
    
-5. Test that everything is up!
+3. Test that everything is up!
 
    a. Run `kubectl get node` - you should see one node (your master node) marked
       as `Ready`.
 
    b. Run `kubectl --namespace=kube-system get pod`. Everything should be in
-      `Running` state. If it's still `Pending`, give it a couple minutes. If
-       they are in `Error` or `CrashLoopBackoff` state, something is wrong.
+      `Running` state.  If it's still `Pending`, give it a couple minutes. If
+       they are in `Error` or `CrashLoopBackoff` state, something is wrong. 
 
-   c. Do `curl localhost` - it should output `404 Not Found`. This means network
+   c. Do `curl localhost`.  It should output `404 Not Found`. This means network
+
       traffic into the cluster is working. If your master node also has an external
       IP that is accessible from the internet, try hitting that too - it should
       also return the same thing. If not, you might be having firewall issues -
       check to make sure traffic can reach the master node from outside!
    
 
-Congratulations, now you have a single node kubernetes cluster that can also act
+Congratulations, now you have a single node Kubernetes cluster that can also act
 as a Kubernetes master for other nodes!
 
 ### Setting up a worker node
@@ -116,30 +119,32 @@ as a Kubernetes master for other nodes!
    securely, since leaking it can compromise your cluster.
 
 2. On the worker node you want to join to the cluster, install the
-   pre-requisites. This is the same script
-   used for setting up the master too.
-
-       sudo ./install-kubeadm.bash
+   pre-requisites:
+   ```bash
+   git clone https://github.com/data-8/kubeadm-bootstrap
+   cd kubeadm-bootstrap
+   sudo ./install-kubeadm.bash
+   ```
    
-   This installs kubeadm, a supported version of docker and sets up the
+   This installs `kubeadm`, a supported version of docker and sets up the
    appropriate storage driver options for docker.
 
-4. Setup the node! Copy the `kubeadm join` command you got as output
-   of step (1) from the maser, and run it in the node. You might have to
-   prefix it with `sudo`. This should take a few minutes.
+3. Copy the `kubeadm join` command you got as output
+   of step (1) from the master, prefix with `sudo` and run it. 
+   This should take a few minutes.
    
-5. Test that everything is up!
+4. Test that everything is up!
 
-   a. On the master, run `kubectl get node` - it should list your new node in
+   a. On the master, run `kubectl get node`.  It should list your new node in
       `Ready` state.
 
-   b. Run `kubectl --namespace=kube-system get pod -o wide`. This should show
-      you a `kube-proxy`, a `flannel` and `nginx-controller` pod running on your
+   b. On the master, run `sudo kubectl --namespace=kube-system get pod -o wide`. This should show
+      you a `kube-proxy`, a `kube-flannel` and `kube-controller` pod running on your
       new node in `Ready` state. If it is in `Pending` state, give it a few minutes
       to get to `Ready`. If it's in `Error` or `CrashLoopBackoff` you have a
       problem.
 
-   c. On the new worker node, do `curl localhost` - it should output
+   c. On the new worker node, do `curl localhost`. It should output
       `404 Not Found`. This means network traffic into your cluster
       is working. If this worker node also has a public
       IP that is accessible from the internet, hit that too - you
