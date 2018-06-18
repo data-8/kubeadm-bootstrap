@@ -154,6 +154,18 @@ as a Kubernetes master for other nodes!
       
 Congratulations, you have a working multi-node Kubernetes cluster! You can
 repeat these steps to add as many new nodes as you want :)
+
+## Docker Storage Base Directory
+By default, Docker puts all of the images and other work files in a directory
+on the boot volume of the instance, called `/var/lib/docker`. This is quite
+convenient for a simple trial system, but this directory can easily fill up
+causing disastrous results for your cluster.
+
+It is highly recommended that you mount an external volume as `/var/lib/docker`
+on each host before running the bootstrap script. Don't forget to configure this
+mount to be restored upon reboot or else docker will quietly create a new
+directory and start storing the files on your boot volume as a ticking time
+bomb.
    
 ## Next step?
 
