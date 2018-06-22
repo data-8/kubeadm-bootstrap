@@ -114,7 +114,7 @@ as a Kubernetes master for other nodes!
 
        kubeadm join --token <some-secret> <master-ip>:6443 --discovery-token-ca-cert-hash sha256:<another-secret>
    
-   This creates a `token` that can be used by another node to join the
+   Running this command as `sudo` creates a `token` that can be used by another node to join the
    cluster. This `token` is valid for 24h by default. Treat it very
    securely, since leaking it can compromise your cluster.
 
